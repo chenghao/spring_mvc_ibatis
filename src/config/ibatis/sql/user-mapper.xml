@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+
+	<insert id="register" parameterClass="user">
+		insert into user(loginName,password,userName,age,sex)
+		values(#loginName#,#password#,#userName#,#age#,#sex#)
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@identity AS pid
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="queryUserByLoginName" parameterClass="String" resultClass="user">
+		select * from user where loginName=#loginName#
+	</select>
+
+	<select id="login" parameterClass="user" resultClass="user">
+		select * from user where loginName=#loginName# and password=#password#
+	</select>
+
+	<select id="queryUser" parameterClass="user" resultClass="user">
+		select *, CASE WHEN sex=1 THEN '男' ELSE '女' END AS sexStr from user
+		
+		<dynamic prepend="where">
+			<isNotEmpty property="userName" prepend="and">
+				userName like "%"#userName#"%"
+			</isNotEmpty>
+		</dynamic>
+		
+		<isNotEmpty property="pageSize">
+		    <isNotEmpty property="pageNo">
+		        LIMIT #pageNo#, #pageSize#
+		    </isNotEmpty>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryRowTotal" parameterClass="String" resultClass="Integer">
+		select count(*) as pageRow from user 
+		
+		<dynamic prepend="where">
+			<isNotEmpty property="value" prepend="and">
+				userName like "%"#value#"%"
+			</isNotEmpty>
+		</dynamic>
+			
+	</select>
+	
+	<update id="saveSessionId" parameterClass="Map">
+		update user set sessionId=#sessionId# where loginName=#loginName#
+	</update>
+	<update id="delSessionId" parameterClass="String">
+		update user set sessionId='' where loginName=#loginName#
+	</update>
+	
+	<select id="queryUserAutoLogin" parameterClass="Map" resultClass="user">
+		select * from user where loginName=#loginName# and sessionId=#sessionId#
+	</select>
+</sqlMap>

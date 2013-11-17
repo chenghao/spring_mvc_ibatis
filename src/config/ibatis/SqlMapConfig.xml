@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+    
+<sqlMapConfig>
+	<!--
+		cacheModelsEnabled 是否启用SqlMapClient上的缓存机制,建议启动设置为true.
+		enhancementEnabled 是否针对pojo启用字节码增强机制以提升getter/setter的调用性能,避免使用java.
+		                Reflect所带来的性能开销,同时这也是Lazy Loading 带来了极大的性能提升,建议设置为true.
+		errorTracingEnabled 是否启用错误日志,在开发期间建议设置为true,方便调试.
+		lazyLoadingEnabled 是否启用延迟加载机制,建议设置为true.
+		maxRequests 最大并发请求数(Statement并发数).
+		maxTransactions 最大并发事务数.
+		maxSessions 最大Session数,即当前最大允许的并发SqlMapClient数,maxSessions必须设定在maxTransactions与maxRequests之间.
+		useStatementNamespaces 是否使用Statement命名空间。
+	-->
+	<settings 
+		cacheModelsEnabled="true" 
+        enhancementEnabled="true" 
+        lazyLoadingEnabled="true"
+        useStatementNamespaces="true" />
+                          
+        
+	<typeAlias alias="user" type="com.lovo.pojo.User" />
+	<typeAlias alias="hobby" type="com.lovo.pojo.Hobby" />
+                
+</sqlMapConfig>
